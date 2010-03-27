@@ -68,14 +68,11 @@
   <script type="text/javascript">
     $(document).ready(function(){
       $("div#chatbox").load("/chatter/_design/chatter/_view/getposts?descending=true&limit=2");
-      //$("div#chatbox").load("/chatter/_design/getposts/_view/getposts?descending=true&endkey=%22" + new Date() + "%22", {time: new Date().getTime() });
       //$("div#userbox").load("users.php", {time: new Date().getTime() });
-      /*
       $("#message").focus();
       $('input[type=submit]').click(function() {
         $("#message").focus();
       });
-      */
     });
 
     var refreshId = setInterval(function() {
@@ -93,6 +90,7 @@
           doc.created_at = new Date();
         },
         success : function (response) {
+          $("#message").val('');
           $("div#chatbox").load("/chatter/_design/chatter/_view/getposts?descending=true&limit=2");
         }
       });
