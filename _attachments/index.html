@@ -1,11 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <title>wikiCHAt</title>
-    <meta http-equiv="refresh" content="600,URL=http://wikicha.com/chat/"/>
+    <title>CouchChat</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta http-equiv="refresh" content="600,URL=/chatter/_design/chatter/index.html"/>
     <link href="style/reset.css" rel="stylesheet" type="text/css"/>
-    <link  href="style/grid.css" rel="stylesheet" type="text/css"/>
-    <link  href="style/type.css" rel="stylesheet"  type="text/css"/>
+    <link href="style/grid.css" rel="stylesheet" type="text/css"/>
+    <link href="style/type.css" rel="stylesheet"  type="text/css"/>
     <link rel="stylesheet" href="style/gadgets.css" type="text/css" media="screen, projection"/>
     <!--[if IE]><link  href="style/ie.css" type="text/css" rel="stylesheet"/><![endif]-->
     <style type="text/css">
@@ -34,37 +35,16 @@
         padding-left: .5em; font-size: .8em;
       }
     </style>
-
-    <script src="/_utils/script/jquery.js?1.3.2"></script>
-    <script type="text/javascript">
-      $(document).ready(function(){
-        $("div#chatbox").load("chatter.php", {time: new Date().getTime() });
-        $("div#userbox").load("users.php", {time: new Date().getTime() });
-        $("#message").focus();
-        $('input[@type=submit]').click(function() {
-          $("#message").focus();
-        });
-      });
-
-      var refreshId = setInterval(function() {
-        $("div#chatbox").load("chatter.php", {time: new Date().getTime() });
-      }, 10000);
-
-      var refreshId = setInterval(function() {
-        $("div#userbox").load("users.php", {time: new Date().getTime() });
-      }, 30000);
-    </script>
   </head>
 
   <body>
     <div id="container" class="main" style="width: 80%;">
-      <div class="dl20"><h1><a href="http://wikicha.com/chat">wiki<span class="beer">CHA</span>t</a></h1></div>
+      <div class="dl20"><h1>CouchChat</h1></div>
       <div class="dr20" style="text-align: right">
-        <h4><span class="caramel">Tea</span> <span class="and">&amp;</span> <span class="caramel">Tomfoolery</span></h4>
       </div>
       <br class="clear"/>
 
-      <form action="/chat/index.php" method="post" id="chatform" name="chatform">
+      <form id="chatform">
         <p>
         <span class="b">Message:</span>
         <input type="text" id="message" name="message"/>
@@ -73,14 +53,43 @@
       </form>
 
       <div id="chatbox" class="dl55" style="width: 80%; border: solid 1px #999999; height: 40em; overflow: auto;"></div>
-      <div id="userbox" class="dr15" style="width: 150px; vertical-align: top;" valign="top"></div>
-      <div id="links" class="dr15" style="font-weight: bold; width: 150px; vertical-align: top; padding-top: 1em;">
-        <h3>Links:</h3>
-        <a href="http://wikicha.com" target="_blank">WikiCHA</a><br/>
-        <a href="http://teadrunk.org" target="_blank">TeaDrunk Forum</a>
-      </div>
+      <div id="userbox" class="dr15" style="width: 150px; vertical-align: top;"></div>
       <br class="clear"/>
     </div>
 
   </body>
+
+  <script src="/_utils/script/json2.js"></script>
+  <script src="/_utils/script/jquery.js?1.3.2"></script>
+  <script src="/_utils/script/jquery.couch.js?0.8.0"></script>
+  <script src="/_utils/script/jquery.cookies.js"></script>
+  <script src="<%= assets %>/jquery.scrollTo.js"></script>
+  <script src="<%= assets %>/vendor/couchapp/jquery.couchapp.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $("div#chatbox").load("/chatter/_design/getposts/_view/getposts?descending=true");
+      //$("div#chatbox").load("/chatter/_design/getposts/_view/getposts?descending=true&endkey=%22" + new Date() + "%22", {time: new Date().getTime() });
+      //$("div#userbox").load("users.php", {time: new Date().getTime() });
+      /*
+      $("#message").focus();
+      $('input[type=submit]').click(function() {
+        $("#message").focus();
+      });
+      */
+    });
+
+    var refreshId = setInterval(function() {
+        $("div#chatbox").load("/chatter/_design/getposts/_view/getposts?descending=true");
+    }, 10000);
+
+    var refreshId = setInterval(function() {
+      //$("div#userbox").load("users.php", {time: new Date().getTime() });
+    }, 30000);
+var postForm = app.docForm("form#chatform",
+    { id : '<%= docid %>', fields : ["message", "author"],
+      success : function(response) {
+        console.log(response);
+      }
+    });
+  </script>
 </html>

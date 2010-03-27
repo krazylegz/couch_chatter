@@ -1,4 +1,4 @@
 {
-    "name": "Name of your CouchApp",
-    "description": "CouchApp"
+    "name": "Chatter",
+    "description": "A CouchDB-based chat room."
 }
