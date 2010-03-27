@@ -70,7 +70,7 @@
       $.getJSON("<%= assets %>/_view/getposts?descending=true&limit=30", function(data, textStatus) {
         var body = '';
         for (i in data.rows) {
-          body += '<div class="row">' + data.rows[i].value.message + '</div>';
+          body += '<div id="message' + i + '" style="padding: .5em; background: #EEEEEE; margin-bottom: .2em; padding-bottom: .9em;"><span class="water oldbook" style="padding-left: .5em; font-size: .8em;">' + data.rows[i].value.author + ' - ' + data.rows[i].value.created_at + '</span><br/><span style="padding-left: .5em;">' + data.rows[i].value.message + '</span></div>';
         }
         $("div#chatbox").html(body);
       });
