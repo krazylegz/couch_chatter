@@ -98,6 +98,7 @@
         beforeSave : function(doc) {
           doc.author = 'Test User 1';
           doc.created_at = new Date();
+          doc.type = 'message';
         },
         success : function (response) {
           $("#message").val('');
