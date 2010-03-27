@@ -66,8 +66,17 @@
   <script src="<%= assets %>/jquery.scrollTo.js"></script>
   <script src="<%= assets %>/vendor/couchapp/jquery.couchapp.js"></script>
   <script type="text/javascript">
+    function reload_chatbox() {
+      $.getJSON("<%= assets %>/_view/getposts?descending=true&limit=30", function(data, textStatus) {
+        var body = '';
+        for (i in data.rows) {
+          body += '<div class="row">' + data.rows[i].value.message + '</div>';
+        }
+        $("div#chatbox").html(body);
+      });
+    }
     $(document).ready(function(){
-      $("div#chatbox").load("/chatter/_design/chatter/_view/getposts?descending=true&limit=2");
+      reload_chatbox();
       //$("div#userbox").load("users.php", {time: new Date().getTime() });
       $("#message").focus();
       $('input[type=submit]').click(function() {
@@ -76,7 +85,7 @@
     });
 
     var refreshId = setInterval(function() {
-        $("div#chatbox").load("/chatter/_design/chatter/_view/getposts?descending=true&limit=2");
+      reload_chatbox();
     }, 10000);
 
     var refreshId = setInterval(function() {
@@ -84,14 +93,14 @@
     }, 30000);
     $.CouchApp(function(app) {
       var postForm = app.docForm("form#chatform", {
-        fields : ["message", "author"],
+        fields : ["message"],
         beforeSave : function(doc) {
           doc.author = 'Test User 1';
           doc.created_at = new Date();
         },
         success : function (response) {
           $("#message").val('');
-          $("div#chatbox").load("/chatter/_design/chatter/_view/getposts?descending=true&limit=2");
+          reload_chatbox();
         }
       });
     });
