@@ -4,10 +4,10 @@
     <title>CouchChat</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta http-equiv="refresh" content="600,URL=/chatter/_design/chatter/index.html"/>
-    <link href="style/reset.css" rel="stylesheet" type="text/css"/>
-    <link href="style/grid.css" rel="stylesheet" type="text/css"/>
-    <link href="style/type.css" rel="stylesheet"  type="text/css"/>
-    <link rel="stylesheet" href="style/gadgets.css" type="text/css" media="screen, projection"/>
+    <link href="<%= assets %>/style/reset.css" rel="stylesheet" type="text/css"/>
+    <link href="<%= assets %>/style/grid.css" rel="stylesheet" type="text/css"/>
+    <link href="<%= assets %>/style/type.css" rel="stylesheet"  type="text/css"/>
+    <link href="<%= assets %>/style/gadgets.css" rel="stylesheet" type="text/css" media="screen, projection"/>
     <!--[if IE]><link  href="style/ie.css" type="text/css" rel="stylesheet"/><![endif]-->
     <style type="text/css">
       .main {width: 70%;}
@@ -44,7 +44,7 @@
       </div>
       <br class="clear"/>
 
-      <form id="chatform">
+      <form id="chatform" method="post" action="post.html">
         <p>
         <span class="b">Message:</span>
         <input type="text" id="message" name="message"/>
@@ -67,7 +67,7 @@
   <script src="<%= assets %>/vendor/couchapp/jquery.couchapp.js"></script>
   <script type="text/javascript">
     $(document).ready(function(){
-      $("div#chatbox").load("/chatter/_design/getposts/_view/getposts?descending=true");
+      $("div#chatbox").load("/chatter/_design/chatter/_view/getposts?descending=true&limit=2");
       //$("div#chatbox").load("/chatter/_design/getposts/_view/getposts?descending=true&endkey=%22" + new Date() + "%22", {time: new Date().getTime() });
       //$("div#userbox").load("users.php", {time: new Date().getTime() });
       /*
@@ -79,17 +79,23 @@
     });
 
     var refreshId = setInterval(function() {
-        $("div#chatbox").load("/chatter/_design/getposts/_view/getposts?descending=true");
+        $("div#chatbox").load("/chatter/_design/chatter/_view/getposts?descending=true&limit=2");
     }, 10000);
 
     var refreshId = setInterval(function() {
       //$("div#userbox").load("users.php", {time: new Date().getTime() });
     }, 30000);
-var postForm = app.docForm("form#chatform",
-    { id : '<%= docid %>', fields : ["message", "author"],
-      success : function(response) {
-        console.log(response);
-      }
+    $.CouchApp(function(app) {
+      var postForm = app.docForm("form#chatform", {
+        fields : ["message", "author"],
+        beforeSave : function(doc) {
+          doc.author = 'Test User 1';
+          doc.created_at = new Date();
+        },
+        success : function (response) {
+          $("div#chatbox").load("/chatter/_design/chatter/_view/getposts?descending=true&limit=2");
+        }
+      });
     });
   </script>
 </html>
