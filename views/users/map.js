@@ -1,3 +1,7 @@
 function(doc) {
-  if (doc.type == 'user') emit(doc._id, {name: doc.name});
+  if (doc.type == 'user') {
+    for (key in doc._attachments) {
+      emit(doc.name, {url: doc._id + '/' + key});
+    }
+  }
 }
