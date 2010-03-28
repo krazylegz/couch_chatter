@@ -44,7 +44,7 @@
       </div>
       <br class="clear"/>
 
-      <form id="chatform" method="post" action="post.html">
+      <form id="chatform" method="post" action="message.html">
         <p>
         <span class="b">Message:</span>
         <input type="text" id="message" name="message"/>
@@ -65,7 +65,7 @@
     <script src="<%= assets %>/vendor/couchapp/jquery.couchapp.js" type="text/javascript"></script>
     <script type="text/javascript">
       function reload_chatbox() {
-        $.getJSON("<%= assets %>/_view/getposts?descending=true&limit=30", function(data, textStatus) {
+        $.getJSON("<%= assets %>/_view/messages?descending=true&limit=30", function(data, textStatus) {
           var body = '';
           for (i in data.rows) {
             var created_at = new Date(data.rows[i].value.created_at);
