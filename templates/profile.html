@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>CouchChat</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta http-equiv="refresh" content="600,URL=<%= index %>"/>
+    <link href="<%= assets %>/style/reset.css" rel="stylesheet" type="text/css"/>
+    <link href="<%= assets %>/style/grid.css" rel="stylesheet" type="text/css"/>
+    <link href="<%= assets %>/style/type.css" rel="stylesheet"  type="text/css"/>
+    <link href="<%= assets %>/style/gadgets.css" rel="stylesheet" type="text/css" media="screen, projection"/>
+    <!--[if IE]><link  href="style/ie.css" type="text/css" rel="stylesheet"/><![endif]-->
+    <style type="text/css">
+      .main {width: 70%;}
+      h1 {margin-top: 8px;}
+      h4 {margin-top: 8px;}
+      img {
+        border: 1px solid black;
+        vertical-align: middle;
+        height: 40px;
+        width: 40px;
+      }
+      #userbox img {
+        margin-bottom: 0.3em;
+      }
+      #chatbox img {
+        float: left;
+      }
+      .messagediv {
+        padding: .5em;
+        background: #EEEEEE;
+        margin-bottom: .2em;
+        padding-bottom: .9em;
+      }
+      .messagespan {
+        padding-left: .5em; font-size: .8em;
+      }
+      #login-modal {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="container" class="main" style="width: 80%;">
+      <div class="dl20"><h1>CouchChat</h1></div>
+      <div class="dr20" style="text-align: right">
+      </div>
+      <br class="clear"/>
+      <h4><%= name %>'s Profile</h4>
+      <img src="/chatter/<%= avatars %>" alt="<%= name %>" />
+      <br class="clear"/>
+    </div>
+  </body>
+</html>

@@ -87,35 +87,6 @@
           return false;
         });
       }else{
-        var avatars = new Array();
-        $.getJSON("<%= assets %>/_view/users", function(data, textStatus) {
-          for (i in data.rows) avatars[data.rows[i].key] = '/chatter/' + data.rows[i].value.url;
-        });
-        function reload_chatbox() {
-          $.getJSON("<%= assets %>/_view/messages?descending=true&limit=30", function(data, textStatus) {
-            var body = '';
-            var avatar = avatars['generic'];
-            for (i in data.rows) {
-              if (avatars[data.rows[i].value.author] != null) {
-                avatar = avatars[data.rows[i].value.author]
-              }
-              var created_at = new Date(data.rows[i].value.created_at);
-              body += '<div id="message' + i + '" style="padding: .5em; background: #EEEEEE; margin-bottom: .2em; padding-bottom: .9em;"><img src="' + avatar + '" /><span class="water oldbook" style="padding-left: .5em; font-size: .8em;">' + data.rows[i].value.author + ' - ' + created_at.toLocaleTimeString() + '</span><br/><span style="padding-left: .5em;">' + data.rows[i].value.message + '</span></div>';
-            }
-            $("div#chatbox").html(body);
-          });
-        }
-
-        $(document).ready(function(){
-          reload_chatbox();
-          //$("div#userbox").load("users.php", {time: new Date().getTime() });
-          $("#message").focus();
-          $('input[type=submit]').click(function() {
-            $("#message").focus();
-          });
-        
-        });
-
         var refreshId = setInterval(function() {
           reload_chatbox();
         }, 10000);
@@ -143,6 +114,35 @@
           });
         });
       }
+
+      var avatars = new Array();
+      $.getJSON("<%= assets %>/_view/users", function(data, textStatus) {
+        for (i in data.rows) avatars[data.rows[i].key] = '/chatter/' + data.rows[i].value.url;
+      });
+
+      function reload_chatbox() {
+        $.getJSON("<%= assets %>/_view/messages?descending=true&limit=30", function(data, textStatus) {
+          var body = '';
+          var avatar = avatars['generic'];
+          for (i in data.rows) {
+            if (avatars[data.rows[i].value.author] != null) {
+              avatar = avatars[data.rows[i].value.author]
+            }
+            var created_at = new Date(data.rows[i].value.created_at);
+            body += '<div id="message' + i + '" style="padding: .5em; background: #EEEEEE; margin-bottom: .2em; padding-bottom: .9em;"><a href="' + avatar + '"><img src="' + avatar + '" /></a><span class="water oldbook" style="padding-left: .5em; font-size: .8em;">' + data.rows[i].value.author + ' - ' + created_at.toLocaleTimeString() + '</span><br/><span style="padding-left: .5em;">' + data.rows[i].value.message + '</span></div>';
+          }
+          $("div#chatbox").html(body);
+        });
+      }
+
+      $(document).ready(function(){
+        reload_chatbox();
+        //$("div#userbox").load("users.php", {time: new Date().getTime() });
+        $("#message").focus();
+        $('input[type=submit]').click(function() {
+          $("#message").focus();
+        });
+      });
     </script>
   </body>
 </html>
