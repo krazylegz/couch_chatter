@@ -130,8 +130,6 @@
           for (i in data.rows) {
             if (avatars[data.rows[i].value.author] != null) {
               avatar = avatars[data.rows[i].value.author]
-              console.log(data.rows[i].value.author);
-              console.log(images);
               image = '<a href="<%= assets %>/_show/profile/' + images[data.rows[i].value.author] + '"><img src="' + avatar + '" /></a>';
             }else{
               avatar = avatars['generic'];
